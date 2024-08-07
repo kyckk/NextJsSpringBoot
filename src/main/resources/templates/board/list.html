@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head th:replace="fragments/common :: head('게시판')">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="sticky-footer-navbar.css" th:href="@{/sticky-footer-navbar.css}" rel="stylesheet">
+    <title>게시판</title>
+</head>
+<body>
+<!-- Fixed navbar -->
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" th:replace="fragments/common :: menu(board)">
+    <!--  <div class="container-fluid">-->
+    <!--    <a class="navbar-brand" href="#">Spring boot Tutorial</a>-->
+    <!--    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">-->
+    <!--      <span class="navbar-toggler-icon"></span>-->
+    <!--    </button>-->
+    <!--    <div class="collapse navbar-collapse" id="navbarCollapse">-->
+    <!--      <ul class="navbar-nav me-auto mb-2 mb-md-0">-->
+    <!--        <li class="nav-item">-->
+    <!--          <a class="nav-link active" aria-current="page" href="#">홈</a>-->
+    <!--        </li>-->
+    <!--        <li class="nav-item">-->
+    <!--          <a class="nav-link" href="#">게시판</a>-->
+    <!--        </li>-->
+    <!--        <li class="nav-item">-->
+    <!--          <a class="nav-link disabled" aria-disabled="true">Disabled</a>-->
+    <!--        </li>-->
+    <!--      </ul>-->
+    <!--      <form class="d-flex" role="search">-->
+    <!--        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
+    <!--        <button class="btn btn-outline-success" type="submit">Search</button>-->
+    <!--      </form>-->
+    <!--    </div>-->
+    <!--  </div>-->
+</nav>
+</header>
+
+<!-- Begin page content -->
+
+    <div class="container">
+        <h2 class="mt-5">게시판 </h2>
+        <div>총 건수 : <span th:text="${boards.totalElements}"></span></div>
+        <div class="d-flex mb-2  justify-content-end"  >
+           <!--- <div class="form-group mx-sm-3 mb-2"> -->
+                <label for= "seachText" class="sr-only"></label>
+                <input type="text" id="seachText"  name="seachText" class="form-control me-2 w-25 float-right">
+                <button type="" class="btn btn-primary btn-sm" id="searchButton">하이</button>
+
+
+        </div>
+        <table class="table table-striped">
+            <tead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">번호</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">내용</th>
+                    <th scope="col">등록일자</th>
+                </tr>
+            </tead>
+            <tbody id="noticeList" th:fragment="hi">
+                <tr th:each="board : ${boards}"  >
+                    <td><input class="form-check-input" type="checkbox" value="" id="checkBox"></td>
+                    <td th:text="${board.noticeId}">1</td>
+                    <td><a th:text="${board.title}" th:href="@{/board/form(noticeId=${board.noticeId})}"></a></td>
+                    <td th:text="${board.content}">Otto</td>
+                    <td th:text="${board.insertDt}">@mdo</td>
+                </tr>
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation example" >
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${1 == boards.pageable.pageNumber +1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/board/list(page=${boards.pageable.pageNumber - 1})}">Previous</a>
+                </li>
+                <li class="page-item" th:classappend="${i == boards.pageable.pageNumber +1} ? 'disabled'"  th:each="i :${#numbers.sequence(startPage , endPage)}">
+                    <a class="page-link" th:text="${i}" th:href="@{/board/list(page=${i -1})}"></a></li>
+
+                <li class="page-item" th:classappend="${boards.totalPages == boards.pageable.pageNumber +1} ? 'disabled'">
+                    <a class="page-link"  th:href="@{/board/list(page=${boards.pageable.pageNumber +1})}">Next</a></li>
+            </ul>
+        </nav>
+         <div class="text-end">
+            <a type="button" class="btn btn-primary" th:href="@{/board/form}">쓰기</a>
+             <a type="button" class="btn btn-danger" th:onclick="hi()">삭제</a>
+         </div>
+
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+<script  th:inline="javascript">
+    function hi() {
+        alert("hello world");
+    }
+    var CB = document.getElementById('checkBox');
+    CB.addEventListener('click',function (event){
+        console.log(event);
+    })
+    let searchBtn = document.getElementById('searchButton')
+    searchBtn.addEventListener('click', function (event){
+
+            search("1");
+
+    });
+    let pgNum ="";
+    function search(searchNum){
+        alert(searchNum);
+        keyword=document.getElementById("seachText").val;
+        pgNum=searchNum;
+        let formData = new FormData();
+        formData.append("title",keyword);
+        formData.append("searchNum",pgNum);
+            fetch('http://localhost:8080/board/test',{
+                method:'POST',
+                //headers:{'Content-Type':'application/json'},
+                body: formData,
+
+
+              }).then((res)=>res.json())
+                .then((result)=> {createList(result)
+               })
+                .catch((err)=>console.log("네트워크 통신 이상"));
+
+    }
+
+    function createList(JsonData) {
+        console.log(JsonData);
+        startPage=JsonData.startPage;
+        endPage=JsonData.endPage;
+        pageNumber=JsonData.boards.pageable.pageNumber;
+        pgNum= Number(pageNumber+1);
+        JsonData=JsonData.boards.content;
+
+
+        let noticeList = document.querySelector("#noticeList")
+        noticeList.innerHTML = "";
+        // noticeList.children.setAttribute('name','1');
+        let list = "";
+        console.log(JsonData);
+        JsonData.forEach((index) => {
+            list += "<tr>"
+            list += "<td><input class='form-check-input' type='checkbox' value='' id='checkBox'></td>"
+            list += "<td>" + index.noticeId + "</td>"
+            list += "<td><a href=/board/form?noticeId=" + index.noticeId + ">" + index.title + "</a></td>"
+            list += "<td>" + index.content + "</td>"
+            list += "<td>" + index.insertDt + "</td>"
+            list += "</tr>"
+        })
+
+        noticeList.innerHTML = list;
+
+        let pagination = document.querySelector(".pagination");
+        pagination.innerHTML = "";
+        const arr1=
+            ["<li class='page-item' name='preNext'><a class='page-link'>Previous</a></li>",
+                "<li class='page-item' name='pageClick'><a class='page-link'  href='#'   value=''></a></li>"
+                ,"<li class='page-item'  name='preNext'><a class='page-link'>Next</a></li>"];
+        arr1.forEach((el,index)=>{
+            if(index == 1){
+                for(let i=startPage; i<=endPage; i++){
+                    pagination.innerHTML +=el;
+                    let pageClick=document.querySelectorAll('[name=pageClick]');
+                    pageClick[Number(i-1)].children[0].setAttribute("value",i)
+                    pageClick[Number(i-1)].children[0].text=i;
+                    pageClick[Number(i-1)].children[0].setAttribute("onclick",`searchCall(${i});`);
+                }
+            }else{
+                pagination.innerHTML +=el;
+
+                if(pgNum == startPage && index == "0" ){
+                    pagination.firstChild.setAttribute("class","page-item disabled")
+                }
+                if(pgNum == endPage  && index == "2" ){
+                    pagination.lastChild.setAttribute("class","page-item disabled")
+                }
+
+            }
+
+        });
+
+
+    }
+
+    function searchCall(num){
+        search(num);
+    }
+    function disabledcheck(num){
+    }
+</script>
+</body>
+</html>

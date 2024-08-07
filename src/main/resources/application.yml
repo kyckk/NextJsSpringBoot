@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@192.168.200.105:1521/XE
+    username: klimtest
+    password: klim1234
+    driver-class-name: oracle.jdbc.OracleDriver
+  jpa:
+    show-sql: true # 쿼리 로그 Show 설정
+    properties:
+      hibernate:
+        format_sql: true # SQL문 정렬하여 출력
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+      location: /Users/klim/upload/
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        type:
+#          descriptor:
+#            sql: trace # 바인딩되는 파라미터 값 출력
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: hello.helloSpring.web.**.model
+  mapper-locations: classpath:/sqlmap/**/*.xml

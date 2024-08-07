@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hello.helloSpring.web.file.FileMapper">
+    <insert id="saveAll" parameterType="list">
+        insert into tb_file(
+        id, notice_id,original_Name,SAVE_NAME ,FILE_SIZE
+        ) values
+
+        <foreach item="file" collection="list" separator=",">
+            (
+            #{file.id, jdbcType=NUMERIC}
+            , #{file.noticeId ,jdbcType=VARCHAR}
+            , #{file.originalName,jdbcType=VARCHAR}
+            , #{file.saveName,jdbcType=VARCHAR}
+            , #{file.fileSize,jdbcType=NUMERIC}
+            )
+        </foreach>
+
+
+    </insert>
+</mapper>
